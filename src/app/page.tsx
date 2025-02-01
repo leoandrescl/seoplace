@@ -1,6 +1,25 @@
 import Image from "next/image";
+import React, { useRef } from "react";
+import emailjs from 'emailjs-com';
 
 export default function Home() {
+  const form = useRef<HTMLFormElement>(null);
+
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (form.current) {
+      emailjs.sendForm('service_2474mjt', 'template_cnn9xxn', form.current, 'xkH_nYuRwJ2LhwLQ1')
+        .then((result) => {
+          console.log(result.text);
+          alert('Mensaje enviado con éxito!');
+        }, (error) => {
+          console.log(error.text);
+          alert('Hubo un error al enviar el mensaje.');
+        });
+    }
+  };
+
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       {/* Hero Section */}
@@ -53,6 +72,28 @@ export default function Home() {
             Visita nuestro sitio
           </a>
         </div>
+
+        {/* Formulario de Contacto */}
+        <section id="contacto" className="mt-12 w-full max-w-2xl">
+          <h2 className="text-2xl font-bold text-primary-600 dark:text-primary-200 mb-6">Contáctanos</h2>
+          <form ref={form} onSubmit={sendEmail} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-primary-800 dark:text-primary-200">Nombre</label>
+              <input type="text" name="user_name" required className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-primary-800 dark:text-primary-200">Email</label>
+              <input type="email" name="user_email" required className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-primary-800 dark:text-primary-200">Mensaje</label>
+              <textarea name="message" required className="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600" />
+            </div>
+            <button type="submit" className="px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-500">
+              Enviar Mensaje
+            </button>
+          </form>
+        </section>
       </main>
 
       {/* Footer */}
@@ -63,7 +104,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/contact.svg"  // Usa tu propio icono
+            src="/contact.svg"  
             alt="Contact icon"
             width={16}
             height={16}
@@ -76,7 +117,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/services.svg"  // Usa tu propio icono
+            src="/services.svg"  
             alt="Services icon"
             width={16}
             height={16}
@@ -89,7 +130,7 @@ export default function Home() {
         >
           <Image
             aria-hidden
-            src="/blog.svg"  // Usa tu propio icono
+            src="/blog.svg"  
             alt="Blog icon"
             width={16}
             height={16}
